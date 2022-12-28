@@ -18,7 +18,7 @@ use yii\filters\RateLimitInterface;
  * @property string|null $ip
  * @property string|null $created_date
  */
-class Post extends \yii\db\ActiveRecord implements RateLimitInterface
+class Post extends \yii\db\ActiveRecord
 {
     public $captcha;
 
@@ -51,6 +51,7 @@ class Post extends \yii\db\ActiveRecord implements RateLimitInterface
     {
         return [
             [['name', 'message'], 'required'],
+            [['name','message'], 'trim'],
             [['created_date'], 'safe'],
             [['name'], 'string', 'max' => 15, 'min' => 2],
             [['message'], 'string', 'max' => 1000, 'min' => 30],
@@ -77,6 +78,9 @@ class Post extends \yii\db\ActiveRecord implements RateLimitInterface
     public function beforeSave($insert)
     {
         $this->ip = Yii::$app->request->userIP;
+        $this->name = strip_tags(trim($this->message,['<b>','<i>','<s>']));
+        $this->message = strip_tags($this->message,['<b>','<i>','<s>']);
+
         return parent::beforeSave($insert);
     }
 
@@ -88,19 +92,4 @@ class Post extends \yii\db\ActiveRecord implements RateLimitInterface
         return false;
     }
 
-
-    public function getRateLimit($request, $action)
-    {
-        return [1, 60]; //не более 100 запросов в течении 60 секунд
-    }
-
-    public function loadAllowance($request, $action)
-    {
-        // TODO: Implement loadAllowance() method.
-    }
-
-    public function saveAllowance($request, $action, $allowance, $timestamp)
-    {
-        // TODO: Implement saveAllowance() method.
-    }
 }

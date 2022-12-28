@@ -24,9 +24,22 @@ class PostController extends Controller
         ];
     }
 
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+        ];
+    }
+
     public function actionIndex(){
         $model = new Post();
-        $savedPosts = Post::find()->all();
+        $savedPosts = Post::find()->orderBy(['id' => SORT_DESC])->all();
         return $this->render('index',[
             'model' => $model,
             'savedPosts' => $savedPosts

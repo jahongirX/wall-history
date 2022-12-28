@@ -29,7 +29,9 @@ $this->title = "Wall History - All posts";
     </div>
     <div class="col-md-4">
         <?php $form = \yii\bootstrap5\ActiveForm::begin([
-            'class' => 'fixed_form',
+            'options' => [
+                'class' => 'fixed_form',
+            ],
             'action' => '/post/post-save'
         ]) ?>
 

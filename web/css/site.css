@@ -82,3 +82,9 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+
+.fixed_form{
+    position: sticky;
+    top: 60px;
+}
